@@ -1,3 +1,6 @@
+import random
+
+
 class Grid:
     def __init__(self, width=50, height=50):
         # zasady dla komórek
@@ -11,6 +14,10 @@ class Grid:
         # siatka sama w sobie
         self.grid = [[0] * width for _ in range(height)]
 
+    def get_grid(self):
+        # zwróć siatkę
+        return self.grid
+
     def set_grid(self, new_grid):
         # sprawdź poprawność wielkości nowej siatki
         if not (len(new_grid) == self.height or len(new_grid[0]) == self.width):
@@ -19,6 +26,25 @@ class Grid:
         # zmień wartości siatki
         self.grid = new_grid
         return self
+
+    def set_random_grid(self):
+        new_grid = [[0] * self.width for _ in range(self.height)]
+        for i in range(self.height):
+            for j in range(self.width):
+                new_grid[i][j] = random.randint(0, 1)
+
+        self.set_grid(new_grid)
+        return self
+
+    def get_cell(self, x, y):
+        # zwróć wartość konkretnej komórki
+        return self.grid[y][x]
+
+    def set_cell(self, x, y, val):
+        # sprawdź, czy wartość jest poprawna
+        if val not in (0, 1):
+            raise ValueError('val can only be 0 or 1')
+        self.grid[y][x] = val
     
     def sum_nearby_cells(self, i, j):
         # zmienne dla łatwiejszych odwołań
