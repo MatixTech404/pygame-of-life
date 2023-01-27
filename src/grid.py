@@ -16,7 +16,7 @@ class Grid:
 
     def get_grid(self):
         # zwróć siatkę
-        return self.grid
+        return self.grid[:]
 
     def set_grid(self, new_grid):
         # sprawdź poprawność wielkości nowej siatki
