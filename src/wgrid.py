@@ -19,6 +19,12 @@ class WGrid:
                 for i in range(grid.width)] for j in range(grid.height)
         ]
 
+    def set_grid(self, new_grid=None):
+        self.grid.set_grid(new_grid)
+
+    def set_random_grid(self):
+        self.grid.set_random_grid()
+
     def draw(self):
         pg.draw.rect(self.window, DARK_GREY, self.rect)
         for ri, ci in zip(self.cells, self.grid.get_grid()):
