@@ -1,2 +1,2 @@
 # pygame-of-life
-Nic specjalnego. Projekt poboczny stworzony do nauki Git i Pygame.
+Nothing special. Just a side project to learn Pygame and Git.
