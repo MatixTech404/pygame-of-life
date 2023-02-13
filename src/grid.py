@@ -3,27 +3,30 @@ import random
 
 class Grid:
     def __init__(self, width=50, height=50):
-        # zasady dla komórek
+        # rules for cells
         self.newlife = (3,)
         self.life = (3, 2)
 
-        # wielkość siatki
+        # size of a grid
         self.width = width
         self.height = height
 
-        # siatka sama w sobie
+        # the grid itself
         self.grid = [[0] * width for _ in range(height)]
 
     def get_grid(self):
-        # zwróć siatkę
+        # return a grid
         return self.grid[:]
 
-    def set_grid(self, new_grid):
-        # sprawdź poprawność wielkości nowej siatki
+    def set_grid(self, new_grid=None):
+        if new_grid is None:
+            new_grid = [[0] * self.width for _ in range(self.height)]
+
+        # check if size of a new grid matches current size
         if not (len(new_grid) == self.height or len(new_grid[0]) == self.width):
             raise ValueError('size of the new grid is incorrect')
 
-        # zmień wartości siatki
+        # change grid
         self.grid = new_grid
         return self
 
@@ -37,14 +40,19 @@ class Grid:
         return self
 
     def get_cell(self, x, y):
-        # zwróć wartość konkretnej komórki
+        # return value of a single cell
         return self.grid[y][x]
 
     def set_cell(self, x, y, val):
-        # sprawdź, czy wartość jest poprawna
+        # check if value is correct
         if val not in (0, 1):
             raise ValueError('val can only be 0 or 1')
+        # change value of a single cell
         self.grid[y][x] = val
+
+    def toggle_cell(self, x, y):
+        cur_state = self.get_cell(x, y)
+        self.set_cell(x, y, 0 if cur_state else 1)
     
     def sum_nearby_cells(self, i, j):
         # zmienne dla łatwiejszych odwołań
