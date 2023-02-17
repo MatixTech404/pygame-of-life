@@ -12,6 +12,11 @@ class WGrid:
         self.grid = grid
         self.rect = pg.Rect(left_top, rect_size)
 
+        # for auto evolving
+        self._auto_evolve = False
+        self._count = 0
+        self.max_count = 6
+
         a = self.rect.width / grid.width - 2 * margin
         b = self.rect.height / grid.height - 2 * margin
         self.cells = [
@@ -25,14 +30,32 @@ class WGrid:
     def set_random_grid(self):
         self.grid.set_random_grid()
 
+    def auto_evolve(self):
+        if not self._auto_evolve:
+            self._count = 0
+            return
+        if self._count == self.max_count:
+            self.grid.evolve()
+            self._count = 0
+            return
+        self._count += 1
+
     def draw(self):
+        self.auto_evolve()
+
         pg.draw.rect(self.window, DARK_GREY, self.rect)
         for ri, ci in zip(self.cells, self.grid.get_grid()):
             for rj, cj in zip(ri, ci):
                 pg.draw.rect(self.window, RED if cj else BLACK, rj)
 
     def evolve(self):
-        self.grid.evolve()
+        if not self._auto_evolve:
+            self.grid.evolve()
+
+    def enable_auto_evolve(self, enable=None):
+        if enable is None:
+            enable = not self._auto_evolve
+        self._auto_evolve = enable
 
     def toggle_cell(self, xpos, ypos):
         for y, ri in enumerate(self.cells):
