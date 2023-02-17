@@ -13,13 +13,13 @@ WINDOW = pg.display.set_mode((WIDTH, HEIGHT))
 
 grid = WGrid(WINDOW, None, (0, 0), (600, 600), margin=1)
 
-buttons = [pg.Rect(610, 100*i-90, 80, 80) for i in range(4)]
+buttons = [pg.Rect(610, 100*i+10, 80, 80) for i in range(4)]
 actions = ['grid.evolve()', 'evolve = not evolve', 'grid.set_grid()', 'grid.set_random_grid()']
 
 clock = pg.time.Clock()
 evolve = False
 count = 0
-max_count = round(FPS / 0.1)
+max_count = 6
 run = True
 while run:
     for e in pg.event.get():
@@ -47,10 +47,14 @@ while run:
         count = 0
     elif evolve:
         count += 1
+    else:
+        count = 0
 
     WINDOW.fill(c.BLACK)
 
     grid.draw()
+    for i in buttons:
+        pg.draw.rect(WINDOW, c.GREY, i)
 
     pg.display.update()
     clock.tick(FPS)
