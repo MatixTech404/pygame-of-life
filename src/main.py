@@ -14,7 +14,7 @@ WINDOW = pg.display.set_mode((WIDTH, HEIGHT))
 grid = WGrid(WINDOW, None, (0, 0), (600, 600), margin=1)
 
 buttons = [pg.Rect(610, 100*i+10, 80, 80) for i in range(4)]
-actions = ['grid.evolve()', 'grid.enable_auto_evolve()', 'grid.set_grid()', 'grid.set_random_grid()']
+actions = [grid.evolve, grid.enable_auto_evolve, grid.set_grid, grid.set_random_grid]
 
 clock = pg.time.Clock()
 run = True
@@ -28,7 +28,7 @@ while run:
                 if grid.rect.collidepoint(pos):
                     grid.toggle_cell(pos[0], pos[1])
                 elif (b := pg.Rect(pos, (1, 1)).collidelist(buttons))+1:
-                    exec(actions[b])  # I know it's not the most elegant solution, but it works ;-)
+                    actions[b]()  # I know it's not the most elegant solution, but it works ;-)
             if e.button == pgc.BUTTON_RIGHT:
                 grid.evolve()
         if e.type == pgc.KEYDOWN:
