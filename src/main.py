@@ -2,6 +2,7 @@ import pygame as pg
 import pygame.locals as pgc  # pygame constants
 
 from wgrid import WGrid
+from button_group import ButtonGroup
 import colors as c
 
 # our constants
@@ -13,8 +14,8 @@ WINDOW = pg.display.set_mode((WIDTH, HEIGHT))
 
 grid = WGrid(WINDOW, None, (0, 0), (600, 600), margin=1)
 
-buttons = [pg.Rect(610, 100*i+10, 80, 80) for i in range(4)]
 actions = [grid.evolve, grid.enable_auto_evolve, grid.set_grid, grid.set_random_grid]
+buttons = ButtonGroup(WINDOW, (610, 10), (0, 100), (80, 80), actions)
 
 clock = pg.time.Clock()
 run = True
@@ -27,8 +28,8 @@ while run:
                 pos = e.pos
                 if grid.rect.collidepoint(pos):
                     grid.toggle_cell(pos[0], pos[1])
-                elif (b := pg.Rect(pos, (1, 1)).collidelist(buttons))+1:
-                    actions[b]()  # I know it's not the most elegant solution, but it works ;-)
+                elif (b := buttons.point_touches(pos)) + 1:
+                    buttons.click(b)
             if e.button == pgc.BUTTON_RIGHT:
                 grid.evolve()
         if e.type == pgc.KEYDOWN:
@@ -42,8 +43,7 @@ while run:
     WINDOW.fill(c.BLACK)
 
     grid.draw()
-    for i in buttons:
-        pg.draw.rect(WINDOW, c.GREY, i)
+    buttons.draw()
 
     pg.display.set_caption(f'FPS: {clock.get_fps()}')
     pg.display.update()

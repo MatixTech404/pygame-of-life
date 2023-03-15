@@ -1,7 +1,7 @@
 import pygame as pg
 
 from grid import Grid
-from colors import *
+import colors as c
 
 
 class WGrid:
@@ -43,10 +43,10 @@ class WGrid:
     def draw(self):
         self.auto_evolve()
 
-        pg.draw.rect(self.window, DARK_GREY, self.rect)
+        pg.draw.rect(self.window, c.DARK_GREY, self.rect)
         for ri, ci in zip(self.cells, self.grid.get_grid()):
             for rj, cj in zip(ri, ci):
-                pg.draw.rect(self.window, RED if cj else BLACK, rj)
+                pg.draw.rect(self.window, c.RED if cj else c.BLACK, rj)
 
     def evolve(self):
         if not self._auto_evolve:
