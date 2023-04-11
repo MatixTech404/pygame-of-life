@@ -2,11 +2,11 @@ from button import Button
 
 
 class ButtonGroup:
-    def __init__(self, window, startpoint, position_change, button_size, actions):
+    def __init__(self, window, startpoint, position_change, button_size, actions, symbols):
         self.button_list = []
-        for i, action in enumerate(actions):
+        for i, (action, symbol) in enumerate(zip(actions, symbols)):
             left_top = (startpoint[0]+i*position_change[0], startpoint[1]+i*position_change[1])
-            self.button_list.append(Button(window, left_top, button_size, action))
+            self.button_list.append(Button(window, left_top, button_size, action, symbol))
 
         self.n_of_buttons = len(self.button_list)
 

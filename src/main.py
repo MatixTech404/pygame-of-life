@@ -15,7 +15,9 @@ WINDOW = pg.display.set_mode((WIDTH, HEIGHT))
 grid = WGrid(WINDOW, None, (0, 0), (600, 600), margin=1)
 
 actions = [grid.evolve, grid.enable_auto_evolve, grid.set_grid, grid.set_random_grid]
-buttons = ButtonGroup(WINDOW, (610, 10), (0, 100), (80, 80), actions)
+symbols = [pg.image.load(r'icons\1.png'), pg.image.load(r'icons\2.png'),
+           pg.image.load(r'icons\3.png'), pg.image.load(r'icons\4.png')]
+buttons = ButtonGroup(WINDOW, (610, 10), (0, 100), (80, 80), actions, symbols)
 
 clock = pg.time.Clock()
 run = True
@@ -26,7 +28,7 @@ while run:
         if e.type == pgc.MOUSEBUTTONDOWN:
             if e.button == pgc.BUTTON_LEFT:
                 pos = e.pos
-                if grid.rect.collidepoint(pos):
+                if grid.click(pos):
                     grid.toggle_cell(pos[0], pos[1])
                 elif (b := buttons.point_touches(pos)) + 1:
                     buttons.click(b)

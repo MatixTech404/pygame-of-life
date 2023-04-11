@@ -40,6 +40,9 @@ class WGrid:
             return
         self._count += 1
 
+    def click(self, pos):
+        return self.rect.collidepoint(pos)
+
     def draw(self):
         self.auto_evolve()
 
