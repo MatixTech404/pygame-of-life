@@ -19,7 +19,7 @@ class ButtonGroup:
     def click(self, button_number):
         if button_number >= self.n_of_buttons:
             raise IndexError('button_number is too high')
-        self.button_list[button_number].click()
+        return self.button_list[button_number].click()
 
     def draw(self):
         for i in self.button_list:

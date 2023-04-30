@@ -31,7 +31,9 @@ while run:
                 if grid.click(pos):
                     grid.toggle_cell(pos[0], pos[1])
                 elif (b := buttons.point_touches(pos)) + 1:
-                    buttons.click(b)
+                    closed = buttons.click(b)
+                    if closed:
+                        run = False
             if e.button == pgc.BUTTON_RIGHT:
                 grid.evolve()
         if e.type == pgc.KEYDOWN:
@@ -40,7 +42,9 @@ while run:
             if e.key == pgc.K_c:
                 grid.set_grid()
             if e.key == pgc.K_r:
-                grid.set_random_grid()
+                closed = grid.set_random_grid()
+                if closed:
+                    run = False
 
     WINDOW.fill(c.BLACK)
 

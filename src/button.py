@@ -19,4 +19,4 @@ class Button:
         return self.rect.collidepoint(point)
 
     def click(self):
-        self.action()
+        return self.action()

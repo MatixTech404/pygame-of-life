@@ -1,7 +1,42 @@
 import pygame as pg
+import pygame.locals as pgc  # pygame constants
 
 from grid import Grid
 import colors as c
+
+
+def _handle_keypress(percent, e):
+    if e.key == pgc.K_0:
+        if percent <= 10:
+            percent = 10 * percent
+    if e.key == pgc.K_1:
+        if percent < 10:
+            percent = 10 * percent + 1
+    if e.key == pgc.K_2:
+        if percent < 10:
+            percent = 10 * percent + 2
+    if e.key == pgc.K_3:
+        if percent < 10:
+            percent = 10 * percent + 3
+    if e.key == pgc.K_4:
+        if percent < 10:
+            percent = 10 * percent + 4
+    if e.key == pgc.K_5:
+        if percent < 10:
+            percent = 10 * percent + 5
+    if e.key == pgc.K_6:
+        if percent < 10:
+            percent = 10 * percent + 6
+    if e.key == pgc.K_7:
+        if percent < 10:
+            percent = 10 * percent + 7
+    if e.key == pgc.K_8:
+        if percent < 10:
+            percent = 10 * percent + 8
+    if e.key == pgc.K_9:
+        if percent < 10:
+            percent = 10 * percent + 9
+    return percent
 
 
 class WGrid:
@@ -24,11 +59,45 @@ class WGrid:
                 for i in range(grid.width)] for j in range(grid.height)
         ]
 
-    def set_grid(self, new_grid=None):
-        self.grid.set_grid(new_grid)
+    def set_grid(self):
+        self.grid.set_grid()
 
     def set_random_grid(self):
-        self.grid.set_random_grid()
+        ask = True
+        percent = 0
+
+        prompt = pg.Surface((520, 220))
+        font = pg.font.SysFont('Seoge UI', 60)
+        txt_ask = font.render('How much percent to fill?', True, c.WHITE)
+        txt_ask_rect = txt_ask.get_rect(center=(260, 70))
+        while ask:
+            for e in pg.event.get():
+                if e.type == pgc.QUIT:
+                    return True
+                if e.type == pgc.KEYDOWN:
+                    percent = _handle_keypress(percent, e)
+
+                    if e.key == pgc.K_BACKSPACE:
+                        percent //= 10
+                    if e.key == pgc.K_RETURN:
+                        ask = False
+                    if e.key == pgc.K_ESCAPE:
+                        return False
+
+            txt_pcnt = font.render(str(percent), True, c.WHITE)
+            txt_pcnt_rect = txt_pcnt.get_rect(right=510, centery=160)
+
+            prompt.fill(c.BLACK)
+            pg.draw.rect(prompt, c.RED, pg.Rect((0, 0), (520, 220)), 5)
+
+            prompt.blit(txt_ask, txt_ask_rect)
+            prompt.blit(txt_pcnt, txt_pcnt_rect)
+
+            self.window.blit(prompt, (90, 190))
+            pg.display.update()
+
+        self.grid.set_random_grid(percent)
+        return False
 
     def auto_evolve(self):
         if not self._auto_evolve:
