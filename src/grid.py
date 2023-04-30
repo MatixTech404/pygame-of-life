@@ -30,14 +30,22 @@ class Grid:
         self.grid = new_grid
         return self
 
-    def set_random_grid(self):
-        new_grid = [[0] * self.width for _ in range(self.height)]
-        for i in range(self.height):
-            for j in range(self.width):
-                new_grid[i][j] = random.randint(0, 1)
+    def set_random_grid(self, percent):
+        if percent == 100:
+            return self.set_grid([[1] * self.width for _ in range(self.height)])
+        if percent == 0:
+            return self.set_grid([[0] * self.width for _ in range(self.height)])
 
-        self.set_grid(new_grid)
-        return self
+        new_grid = [[0] * self.width for _ in range(self.height)]
+        to_fill = percent / 100 * self.width * self.height
+
+        while to_fill:
+            x, y = random.randint(0, self.width-1), random.randint(0, self.height-1)
+            if new_grid[y][x] == 0:
+                new_grid[y][x] = 1
+                to_fill -= 1
+
+        return self.set_grid(new_grid)
 
     def get_cell(self, x, y):
         # return value of a single cell
